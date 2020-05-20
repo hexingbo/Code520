@@ -86,9 +86,7 @@ public class LoveBrowserActivity extends AppCompatActivity implements View.OnCli
     private ImageView imgBottom;
     private boolean isPause = false;
 
-
     private RotateYAnimation animation = new RotateYAnimation();
-
 
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {

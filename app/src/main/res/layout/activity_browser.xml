@@ -19,15 +19,16 @@
         android:id="@+id/typeTextView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="25dp"
         android:gravity="center"
         android:textColor="#8080ff"
-        android:textSize="20sp" />
+        android:textSize="19sp" />
 
     <LinearLayout
         android:id="@+id/ll_top"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="110dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:visibility="invisible"
@@ -107,8 +108,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="40dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginRight="10dp"
         android:src="@mipmap/pink_snow" />
 
     <ImageView
@@ -116,7 +117,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginBottom="20dp"
         android:src="@mipmap/pink_snow" />
 
