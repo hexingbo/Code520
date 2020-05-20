@@ -1,9 +1,11 @@
 package com.hxb.code520;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,24 +15,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.hxb.code520.util.DataHelper;
 import com.hxb.code520.util.DeviceInfo;
 import com.hxb.code520.util.statusbar.StatusBarUtil;
+import com.hxb.code520.view.RotateYAnimation;
 import com.hxb.code520.view.bluesnow.FlowerView;
 import com.hxb.code520.view.typewriter.TypeTextView;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-public class LoveBrowserActivity extends AppCompatActivity {
+public class LoveBrowserActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String YuLu = "《语录》\n心动是等你的留言\n渴望是常和你见面\n甜蜜是和你小路流连\n温馨是看着你清澈的双眼\n爱你的感觉真的妙不可言";
     private static final String LOVE = "《2020年遇见爱情遇见你》"
@@ -49,7 +56,8 @@ public class LoveBrowserActivity extends AppCompatActivity {
             + "\n" + "我们成为好友"
             + "\n" + "4月5日"
             + "\n" + "我们参加户外"
-            + "\n" + "今天5月20日"
+            + "\n" + "今天"
+            + "\n" + "5月20日"
             + "\n" + "我们正式约会"
             + "\n" + "太多，太多的回忆"
             + "\n" + "语音、视频、喝茶、谈心..."
@@ -69,6 +77,19 @@ public class LoveBrowserActivity extends AppCompatActivity {
     private TypeTextView mTypeTextView2;//打字机
     private LinearLayout llTop;
 
+    private ObjectAnimator mAnimator;
+    private ObjectAnimator mAnimatorBottom;
+    private ObjectAnimator mAnimator520;
+    private MediaPlayer mPlayer;
+    private LinearLayout ll_520;
+    private ImageView imgTop;
+    private ImageView imgBottom;
+    private boolean isPause = false;
+
+
+    RotateYAnimation animation = new RotateYAnimation();
+
+
     @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler() {
         @Override
@@ -86,9 +107,76 @@ public class LoveBrowserActivity extends AppCompatActivity {
         DeviceInfo.getInstance().initializeScreenInfo(this);
         setContentView(R.layout.activity_browser);
 
+        openRawMusic();
+        initAnimator520();
+        initAnimator();
+        initAnimatorBottom();
+        onClick(imgTop);
+
         startBlueSnow();
         startLOVEText();
+
     }
+
+    /**
+     * 打开raw目录下的音乐mp3文件
+     */
+    private void openRawMusic() {
+        mPlayer = MediaPlayer.create(this, R.raw.love_music);
+        //用prepare方法，会报错误java.lang.IllegalStateExceptio
+        //mediaPlayer.prepare();
+        int duration = mPlayer.getDuration();//获取音乐总时间
+        mPlayer.setLooping(true);//设置为循环播放
+        mPlayer.start();//开始播放音乐
+        mPlayer.pause();//暂停播放音乐
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void initAnimator520() {
+        ll_520 = findViewById(R.id.ll_520);
+        //旋转的次数
+        animation.setRepeatCount(Integer.MAX_VALUE);
+//        //旋转的时间
+        animation.setDuration(1000);
+        //是否停留在动画的最后一帧
+        animation.setFillAfter(false);
+        ll_520.startAnimation(animation);
+
+//        mAnimator520 = ObjectAnimator.ofFloat(ll_520, "rotation", 0.0f, 360.0f);
+//        mAnimator520.setDuration(3000);//设定转一圈的时间
+//        mAnimator520.setRepeatCount(Animation.INFINITE);//设定无限循环
+//        mAnimator520.setRepeatMode(ObjectAnimator.RESTART);// 循环模式
+//        mAnimator520.setInterpolator(new LinearInterpolator());// 匀速
+//        mAnimator520.start();//动画开始
+//        mAnimator520.pause();//动画暂停
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void initAnimator() {
+        imgTop = findViewById(R.id.imgTop);
+        imgTop.setOnClickListener(this);
+        mAnimator = ObjectAnimator.ofFloat(imgTop, "rotation", 0.0f, 360.0f);
+        mAnimator.setDuration(3000);//设定转一圈的时间
+        mAnimator.setRepeatCount(Animation.INFINITE);//设定无限循环
+        mAnimator.setRepeatMode(ObjectAnimator.RESTART);// 循环模式
+        mAnimator.setInterpolator(new LinearInterpolator());// 匀速
+        mAnimator.start();//动画开始
+        mAnimator.pause();//动画暂停
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void initAnimatorBottom() {
+        imgBottom = findViewById(R.id.imgBottom);
+        imgBottom.setOnClickListener(this);
+        mAnimatorBottom = ObjectAnimator.ofFloat(imgBottom, "rotation", 0.0f, 360.0f);
+        mAnimatorBottom.setDuration(3000);//设定转一圈的时间
+        mAnimatorBottom.setRepeatCount(Animation.INFINITE);//设定无限循环
+        mAnimatorBottom.setRepeatMode(ObjectAnimator.RESTART);// 循环模式
+        mAnimatorBottom.setInterpolator(new LinearInterpolator());// 匀速
+        mAnimatorBottom.start();//动画开始
+        mAnimatorBottom.pause();//动画暂停
+    }
+
 
     /**
      * 表白文字
@@ -136,6 +224,7 @@ public class LoveBrowserActivity extends AppCompatActivity {
             public void run() {
                 mTypeTextView.setVisibility(View.GONE);
                 llTop.setVisibility(View.VISIBLE);
+//                mAnimator520.resume();//动画继续
                 startYuLuText();
             }
         }, 5000);//3秒后执行Runnable中的run方法
@@ -208,6 +297,7 @@ public class LoveBrowserActivity extends AppCompatActivity {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
         }
+
     }
 
     @Override
@@ -218,6 +308,9 @@ public class LoveBrowserActivity extends AppCompatActivity {
             this.mWebView.removeAllViews();
             this.mWebView.destroy();
             this.mWebView = null;
+        }
+        if (mPlayer != null) {
+            mPlayer.stop();//停止播放音乐
         }
     }
 
@@ -284,4 +377,24 @@ public class LoveBrowserActivity extends AppCompatActivity {
 
         }
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public void onClick(View v) {
+        int i = v.getId();
+        if (i == R.id.imgTop || i == R.id.imgBottom) {
+            if (!isPause) {
+                mAnimator.resume();//动画继续
+                mAnimatorBottom.resume();//动画继续
+                mPlayer.start();//继续开始音乐播放
+                isPause = true;
+            } else {
+                mAnimator.pause();//动画暂停
+                mAnimatorBottom.pause();//动画暂停
+                mPlayer.pause();//暂停音乐播放
+                isPause = false;
+            }
+        }
+    }
+
 }
