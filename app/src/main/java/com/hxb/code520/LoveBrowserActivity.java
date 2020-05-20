@@ -87,7 +87,7 @@ public class LoveBrowserActivity extends AppCompatActivity implements View.OnCli
     private boolean isPause = false;
 
 
-    RotateYAnimation animation = new RotateYAnimation();
+    private RotateYAnimation animation = new RotateYAnimation();
 
 
     @SuppressLint("HandlerLeak")
@@ -135,11 +135,11 @@ public class LoveBrowserActivity extends AppCompatActivity implements View.OnCli
     private void initAnimator520() {
         ll_520 = findViewById(R.id.ll_520);
         //旋转的次数
-        animation.setRepeatCount(Integer.MAX_VALUE);
+        animation.setRepeatCount(-1);
 //        //旋转的时间
-        animation.setDuration(1000);
+        animation.setDuration(900);
         //是否停留在动画的最后一帧
-        animation.setFillAfter(false);
+        animation.setFillAfter(true);
         ll_520.startAnimation(animation);
 
 //        mAnimator520 = ObjectAnimator.ofFloat(ll_520, "rotation", 0.0f, 360.0f);
